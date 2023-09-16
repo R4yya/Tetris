@@ -8,12 +8,14 @@ class Game(object):
     def __init__(self):
         pygame.init()
 
-        self.resolution = (480, 854)
-        self.screen = pygame.display.set_mode(self.resolution)
+        self.screen_width, self.screen_height = 481, 861
+        self.screen = pygame.display.set_mode(
+            (self.screen_width, self.screen_height))
         pygame.display.set_caption('Tetris')
 
         self.tetromino = Tetromino()
-        self.field = Field()
+        self.field = Field(
+            width=10, height=20, screen_width=self.screen_width, screen_height=self.screen_height)
         self.score = Score()
 
         self.clock = pygame.time.Clock()
@@ -29,6 +31,7 @@ class Game(object):
 
     def draw(self):
         self.screen.fill((0, 0, 0))
+        self.field.draw_grid(self.screen)
         pygame.display.flip()
 
     def run(self):
