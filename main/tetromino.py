@@ -36,6 +36,7 @@ class Tetromino(object):
             (209, 98, 0),
             (130, 0, 0)]
 
+        self.color = choice(self.colors)
         self.current_shape = choice(self.shapes)
 
         self.x = 0
@@ -61,6 +62,3 @@ class Tetromino(object):
 
     def rotate(self):
         self.current_shape = list(zip(*self.current_shape[::-1]))
-
-    def check_collision(self):
-        pass
