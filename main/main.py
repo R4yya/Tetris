@@ -28,8 +28,9 @@ class Game(object):
         for row in range(len(current_shape)):
             for col in range(len(current_shape[0])):
                 if current_shape[row][col] == 1:
-                    self.field.field[y // self.cell_size +
-                                     row][x // self.cell_size + col] = 1
+                    self.field.update(self.screen, self.current_tetromino)
+
+        self.field.check_lines()
 
         self.current_tetromino = Tetromino(self.cell_size)
 
@@ -66,16 +67,16 @@ class Game(object):
                         self.current_tetromino.rotate()
 
     def update(self):
-        if self.check_collision():
-            self.place_tetromino()
-        else:
+        if not self.check_collision():
             self.current_tetromino.move_down()
+        else:
+            self.place_tetromino()
+            self.field.draw_fallen_tetromino(self.screen, self.current_tetromino)
 
     def draw(self):
         self.screen.fill((0, 0, 0))
         self.current_tetromino.draw(self.screen)
         self.field.draw_grid(self.screen)
-        
         pygame.display.flip()
 
     def run(self):
@@ -85,7 +86,7 @@ class Game(object):
             self.handle_events()
             self.update()
             self.draw()
-            self.clock.tick(1)
+            self.clock.tick(10)
 
 
 if __name__ == '__main__':
