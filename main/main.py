@@ -1,5 +1,9 @@
 from settings import *
 
+from game import Game
+from score import Score
+from preview import Preview
+
 
 class Main(object):
     def __init__(self):
@@ -10,6 +14,10 @@ class Main(object):
         pygame.display.set_caption('Tetris')
 
         self.clock = pygame.time.Clock()
+
+        self.game = Game()
+        self.score = Score()
+        self.preview = Preview()
 
     def handle_events(self):
         for event in pygame.event.get():
@@ -29,6 +37,10 @@ class Main(object):
             self.handle_events()
 
             self.display_surface.fill(COLORS['GRAY'])
+
+            self.game.run()
+            self.score.run()
+            self.preview.run()
 
             self.update()
             self.clock.tick()
