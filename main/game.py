@@ -1,4 +1,4 @@
-from utils.settings import *
+from settings import *
 from base_model import BaseModel
 
 
