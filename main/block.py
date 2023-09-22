@@ -1,4 +1,4 @@
-from utils.settings import *
+from settings import *
 
 
 class Block(pygame.sprite.Sprite):
