@@ -6,6 +6,7 @@ from preview import Preview
 
 from random import choice
 
+
 class Tetris(object):
     def __init__(self):
         pygame.init()
@@ -18,7 +19,7 @@ class Tetris(object):
 
         self.next_shapes = [choice(list(TETROMINOS.keys())) for shape in range(3)]
 
-        self.game = Game()
+        self.game = Game(self.get_next_shape)
         self.score = Score()
         self.preview = Preview()
 
