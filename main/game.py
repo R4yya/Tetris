@@ -104,7 +104,7 @@ class Game(BaseModel):
                 self.tetromino.move_horizontal(1)
                 self.timers['horisontal_move'].activate()
 
-        if not self.timers['rotate_timer'].active:
+        if not self.timers['rotate'].active:
             if keys[pygame.K_UP]:
                 self.tetromino.rotate()
                 self.timers['rotate'].activate()
