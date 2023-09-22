@@ -33,12 +33,12 @@ class Game(BaseModel):
         for col in range(1, COLUMNS):
             x = col * CELL_SIZE
             pygame.draw.line(
-                self.line_surface, COLORS['WHITE'], (x, 0), (x, self.line_surface.get_height()), 1)
+                self.line_surface, COLORS['WHITE'], (x, 0), (x, self.line_surface.get_height()), 2)
 
         for row in range(1, ROWS):
             y = row * CELL_SIZE
             pygame.draw.line(
-                self.line_surface, COLORS['WHITE'], (0, y), (self.line_surface.get_width(), y), 1)
+                self.line_surface, COLORS['WHITE'], (0, y), (self.line_surface.get_width(), y), 2)
 
         self.surface.blit(self.line_surface, (0, 0))
 
@@ -53,7 +53,7 @@ class Game(BaseModel):
         self.display_surface.blit(self.surface, (PADDING, PADDING))
 
         pygame.draw.rect(self.display_surface,
-                         COLORS['WHITE'], self.border, 2, 0)
+                         COLORS['WHITE'], self.border, 3, 0)
 
 
 if __name__ == '__main__':
