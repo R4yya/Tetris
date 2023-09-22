@@ -26,7 +26,8 @@ class Game(BaseModel):
             choice(list(TETROMINOS.keys())), self.sprites)
 
         self.timers = {
-            'vertival_move': Timer(UPDATE_START_SPEED, True, self.move_down)
+            'vertival_move': Timer(UPDATE_START_SPEED, True, self.move_down),
+            'horisontal_move': Timer(MOVE_WAIT_TIME)
         }
         self.timers['vertival_move'].activate()
 
@@ -56,8 +57,24 @@ class Game(BaseModel):
     def move_down(self):
         self.tetromino.move_down()
 
+    def handle_input(self):
+        keys = pygame.key.get_pressed()
+
+        if not self.timers['horisontal_move'].active:
+            if keys[pygame.K_LEFT]:
+                self.tetromino.move_horizontal(-1)
+                self.timers['horisontal_move'].activate()
+            if keys[pygame.K_RIGHT]:
+                self.tetromino.move_horizontal(1)
+                self.timers['horisontal_move'].activate()
+            if keys[pygame.K_UP]:
+                pass
+            if keys[pygame.K_DOWN]:
+                pass
+
     def run(self):
 
+        self.handle_input()
         self.timers_update()
         self.sprites.update()
 
