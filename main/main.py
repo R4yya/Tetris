@@ -19,7 +19,7 @@ class Tetris(object):
         self.score = Score()
         self.preview = Preview()
 
-    def handle_events(self):
+    def handle_quit(self):
         for event in pygame.event.get():
             match event.type:
                 case pygame.QUIT:
@@ -32,7 +32,7 @@ class Tetris(object):
         self.running = True
 
         while self.running:
-            self.handle_events()
+            self.handle_quit()
 
             self.display_surface.fill(COLORS['GRAY'])
 
