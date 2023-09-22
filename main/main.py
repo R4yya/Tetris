@@ -11,8 +11,7 @@ class Tetris(object):
     def __init__(self):
         pygame.init()
 
-        self.display_surface = pygame.display.set_mode(
-            (WINDOW_WIDTH, WINDOW_HEIGHT))
+        self.display_surface = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
         pygame.display.set_caption('Tetris')
 
         self.clock = pygame.time.Clock()
@@ -21,7 +20,7 @@ class Tetris(object):
 
         self.game = Game(self.get_next_shape)
         self.score = Score()
-        self.preview = Preview()
+        self.preview = Preview(self.get_next_shape)
 
     def handle_quit(self):
         for event in pygame.event.get():
