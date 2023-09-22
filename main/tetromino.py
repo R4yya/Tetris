@@ -4,21 +4,24 @@ from block import Block
 
 
 class Tetromino(object):
-    def __init__(self, shape, group):
+    def __init__(self, shape, group, create_new_teromino, field_data):
         self.block_positions = TETROMINOS[shape]['shape']
         self.color = TETROMINOS[shape]['color']
+
+        self.create_new_teromino = create_new_teromino
+        self.field_data = field_data
 
         self.blocks = [Block(group, position, self.color)
                        for position in self.block_positions]
 
     def next_move_horizontal_collide(self, blocks, step):
         collision_list = [block.horizontal_collide(
-            int(block.position.x + step)) for block in self.blocks]
+            int(block.position.x + step), self.field_data) for block in self.blocks]
         return True if any(collision_list) else False
 
     def next_move_vertical_collide(self, blocks, step):
         collision_list = [block.vertical_collide(
-            int(block.position.y + step)) for block in self.blocks]
+            int(block.position.y + step), self.field_data) for block in self.blocks]
         return True if any(collision_list) else False
 
     def move_down(self, step):
@@ -26,6 +29,8 @@ class Tetromino(object):
             for block in self.blocks:
                 block.position.y += step
         else:
+            for block in self.blocks:
+                self.field_data[int(block.position.y)][int(block.position.x)] = block
             self.create_new_teromino()
 
     def move_horizontal(self, step):
