@@ -1,5 +1,10 @@
 from settings import *
+
 from base_model import BaseModel
+
+from tetromino import Tetromino
+
+from random import choice
 
 
 class Game(BaseModel):
@@ -9,10 +14,14 @@ class Game(BaseModel):
 
         self.border = self.surface.get_rect(topleft=(PADDING, PADDING))
 
+        self.sprites = pygame.sprite.Group()
+
         self.line_surface = self.surface.copy()
         self.line_surface.fill(COLORS['PURE_GREEN'])
         self.line_surface.set_colorkey(COLORS['PURE_GREEN'])
         self.line_surface.set_alpha(120)
+
+        self.tetromino = Tetromino(choice(list(TETROMINOS.keys())), self.sprites)
 
     def set_surface(self):
         return pygame.Surface((GAME_WIDTH, GAME_HEIGHT))
@@ -37,12 +46,14 @@ class Game(BaseModel):
 
         self.surface.fill(COLORS['GRAY'])
 
+        self.sprites.draw(self.surface)
+
         self.draw_grid()
 
         self.display_surface.blit(self.surface, (PADDING, PADDING))
 
         pygame.draw.rect(self.display_surface,
-                         COLORS['WHITE'], self.border, 3, 3)
+                         COLORS['WHITE'], self.border, 2, 0)
 
 
 if __name__ == '__main__':
