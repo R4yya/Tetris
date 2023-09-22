@@ -12,17 +12,16 @@ class Tetromino(object):
         self.create_new_teromino = create_new_teromino
         self.field_data = field_data
 
-        self.blocks = [Block(group, position, self.color)
-                       for position in self.block_positions]
+        self.blocks = [Block(group, position, self.color) for position in self.block_positions]
 
     def next_move_horizontal_collide(self, blocks, step):
-        collision_list = [block.horizontal_collide(
-            int(block.position.x + step), self.field_data) for block in self.blocks]
+        collision_list = [block.horizontal_collide(int(block.position.x + step), self.field_data) for block in self.blocks]
+        
         return True if any(collision_list) else False
 
     def next_move_vertical_collide(self, blocks, step):
-        collision_list = [block.vertical_collide(
-            int(block.position.y + step), self.field_data) for block in self.blocks]
+        collision_list = [block.vertical_collide(int(block.position.y + step), self.field_data) for block in self.blocks]
+        
         return True if any(collision_list) else False
 
     def move_down(self, step):
