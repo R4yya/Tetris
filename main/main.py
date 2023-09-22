@@ -24,8 +24,6 @@ class Tetris(object):
             match event.type:
                 case pygame.QUIT:
                     self.running = False
-                case pygame.KEYDOWN:
-                    pass
 
     def update(self):
         pygame.display.update()
