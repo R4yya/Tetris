@@ -16,8 +16,11 @@ class Block(pygame.sprite.Sprite):
         else:
             return False
 
-    def vertical_collide(self, x):
-        pass
+    def vertical_collide(self, y):
+        if not y < ROWS:
+            return True
+        else:
+            return False
 
     def update(self):
         self.rect.topleft = self.position * CELL_SIZE
