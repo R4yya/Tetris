@@ -24,8 +24,9 @@ class Tetromino(object):
             block.position.y += 1
 
     def move_horizontal(self, step):
-        for block in self.blocks:
-            block.position.x += step
+        if not self.next_move_horizontal_collide(self.blocks, step):
+            for block in self.blocks:
+                block.position.x += step
 
 
 if __name__ == '__main__':
