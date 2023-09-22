@@ -27,7 +27,8 @@ COLORS = {'YELLOW': '#f1e60d',
           'CYAN': '#6cc6d9',
           'ORANGE': '#f07',
           'GRAY': '#1c1c1c',
-          'WHITE': '#ffffff'}
+          'WHITE': '#ffffff',
+          'PURE_GREEN': '#00ff00'}
 
 TETROMINOS = {'T': {'shape': [(0, 0), (-1, 0), (1, 0), (0, -1)], 'color': COLORS['PURPLE']},
               'O': {'shape': [(0, 0), (0, -1), (1, 0), (1, -1)], 'color': COLORS['YELLOW']},
