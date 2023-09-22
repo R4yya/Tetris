@@ -11,6 +11,10 @@ class Tetromino(object):
         self.blocks = [Block(group, position, self.color)
                        for position in self.block_positions]
 
+    def move_down(self):
+        for block in self.blocks:
+            block.position.y += 1
+
 
 if __name__ == '__main__':
     pass
