@@ -15,6 +15,10 @@ class Tetromino(object):
         for block in self.blocks:
             block.position.y += 1
 
+    def move_horizontal(self, step):
+        for block in self.blocks:
+            block.position.x += step
+
 
 if __name__ == '__main__':
     pass
