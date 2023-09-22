@@ -3,6 +3,7 @@ from settings import *
 from base_model import BaseModel
 
 from tetromino import Tetromino
+from timer import Timer
 
 from random import choice
 
@@ -21,7 +22,13 @@ class Game(BaseModel):
         self.line_surface.set_colorkey(COLORS['PURE_GREEN'])
         self.line_surface.set_alpha(120)
 
-        self.tetromino = Tetromino(choice(list(TETROMINOS.keys())), self.sprites)
+        self.tetromino = Tetromino(
+            choice(list(TETROMINOS.keys())), self.sprites)
+
+        self.timers = {
+            'vertival_move': Timer(UPDATE_START_SPEED, True, self.move_down)
+        }
+        self.timers['vertival_move'].activate()
 
     def set_surface(self):
         return pygame.Surface((GAME_WIDTH, GAME_HEIGHT))
@@ -42,7 +49,17 @@ class Game(BaseModel):
 
         self.surface.blit(self.line_surface, (0, 0))
 
+    def timers_update(self):
+        for timer in self.timers.values():
+            timer.update()
+
+    def move_down(self):
+        self.tetromino.move_down()
+
     def run(self):
+
+        self.timers_update()
+        self.sprites.update()
 
         self.surface.fill(COLORS['GRAY'])
 
