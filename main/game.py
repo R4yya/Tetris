@@ -22,12 +22,17 @@ class Game(BaseModel):
         self.line_surface.set_colorkey(COLORS['PURE_GREEN'])
         self.line_surface.set_alpha(120)
 
+        self.field_data = [[0 for x in range(COLUMNS)] for y in range(ROWS)]
         self.tetromino = Tetromino(
-            choice(list(TETROMINOS.keys())), self.sprites)
+            choice(list(TETROMINOS.keys())),
+            self.sprites,
+            self.create_new_teromino,
+            self.field_data)
 
         self.timers = {
             'vertival_move': Timer(UPDATE_START_SPEED, True, self.move_down),
-            'horisontal_move': Timer(MOVE_WAIT_TIME)
+            'horisontal_move': Timer(MOVE_WAIT_TIME),
+            'rotate': Timer(ROTATE_WAIT_TIME)
         }
         self.timers['vertival_move'].activate()
 
@@ -51,7 +56,13 @@ class Game(BaseModel):
         self.surface.blit(self.line_surface, (0, 0))
 
     def create_new_teromino(self):
-        pass
+        self.check_filled_rows()
+
+        self.tetromino = Tetromino(
+            choice(list(TETROMINOS.keys())),
+            self.sprites,
+            self.create_new_teromino,
+            self.field_data)
 
     def timers_update(self):
         for timer in self.timers.values():
@@ -59,6 +70,28 @@ class Game(BaseModel):
 
     def move_down(self):
         self.tetromino.move_down(1)
+
+    def check_filled_rows(self):
+        filled_rows = []
+
+        for i, row in enumerate(self.field_data):
+            if all(row):
+                filled_rows.append(i)
+
+        if filled_rows:
+            for filled_row in filled_rows:
+                for block in self.field_data[filled_row]:
+                    block.kill()
+
+                for row in self.field_data:
+                    for block in row:
+                        if block and block.position.y < filled_row:
+                            block.position.y += 1
+
+            self.field_data = [[0 for x in range(COLUMNS)] for y in range(ROWS)]
+            
+            for block in self.sprites:
+                self.field_data[int(block.position.y)][int(block.position.x)] = block
 
     def handle_input(self):
         keys = pygame.key.get_pressed()
@@ -70,10 +103,11 @@ class Game(BaseModel):
             if keys[pygame.K_RIGHT]:
                 self.tetromino.move_horizontal(1)
                 self.timers['horisontal_move'].activate()
+
+        if not self.timers['rotate_timer'].active:
             if keys[pygame.K_UP]:
-                pass
-            if keys[pygame.K_DOWN]:
-                pass
+                self.tetromino.rotate()
+                self.timers['rotate'].activate()
 
     def run(self):
 
