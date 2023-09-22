@@ -9,13 +9,15 @@ from random import choice
 
 
 class Game(BaseModel):
-    def __init__(self):
+    def __init__(self, get_next_shape):
         self.surface = self.set_surface()
         self.display_surface = self.set_display_surface()
 
         self.border = self.surface.get_rect(topleft=(PADDING, PADDING))
 
         self.sprites = pygame.sprite.Group()
+
+        self.get_next_shape = get_next_shape
 
         self.line_surface = self.surface.copy()
         self.line_surface.fill(COLORS['PURE_GREEN'])
@@ -59,7 +61,7 @@ class Game(BaseModel):
         self.check_filled_rows()
 
         self.tetromino = Tetromino(
-            choice(list(TETROMINOS.keys())),
+            self.get_next_shape(),
             self.sprites,
             self.create_new_teromino,
             self.field_data)
@@ -89,7 +91,7 @@ class Game(BaseModel):
                             block.position.y += 1
 
             self.field_data = [[0 for x in range(COLUMNS)] for y in range(ROWS)]
-            
+
             for block in self.sprites:
                 self.field_data[int(block.position.y)][int(block.position.x)] = block
 
