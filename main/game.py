@@ -50,12 +50,15 @@ class Game(BaseModel):
 
         self.surface.blit(self.line_surface, (0, 0))
 
+    def create_new_teromino(self):
+        pass
+
     def timers_update(self):
         for timer in self.timers.values():
             timer.update()
 
     def move_down(self):
-        self.tetromino.move_down()
+        self.tetromino.move_down(1)
 
     def handle_input(self):
         keys = pygame.key.get_pressed()
