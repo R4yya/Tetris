@@ -1,10 +1,11 @@
 from utils.settings import *
+from base_model import BaseModel
 
 
-class Game(object):
+class Game(BaseModel):
     def __init__(self):
-        self.surface = pygame.Surface((GAME_WIDTH, GAME_HEIGHT))
-        self.display_surface = pygame.display.get_surface()
+        self.surface = self.set_surface()
+        self.display_surface = self.set_display_surface()
 
         self.border = self.surface.get_rect(topleft=(PADDING, PADDING))
 
@@ -12,6 +13,12 @@ class Game(object):
         self.line_surface.fill(COLORS['PURE_GREEN'])
         self.line_surface.set_colorkey(COLORS['PURE_GREEN'])
         self.line_surface.set_alpha(120)
+
+    def set_surface(self):
+        return pygame.Surface((GAME_WIDTH, GAME_HEIGHT))
+
+    def set_display_surface(self):
+        return pygame.display.get_surface()
 
     def draw_grid(self):
         for col in range(1, COLUMNS):
