@@ -1,4 +1,4 @@
-from settings import *
+from utils.settings import *
 
 
 class Score(object):

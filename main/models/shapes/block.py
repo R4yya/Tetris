@@ -1,7 +1,7 @@
-from settings import *
+from utils.settings import *
 
 
-class Block(object):
+class Block(pygame.sprite.Sprite):
     def __init__(self):
         pass
 

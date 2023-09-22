@@ -1,8 +1,8 @@
-from settings import *
+from utils.settings import *
 
-from game import Game
-from score import Score
-from preview import Preview
+from models.game import Game
+from models.score import Score
+from models.preview import Preview
 
 
 class Tetris(object):
