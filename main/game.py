@@ -29,7 +29,8 @@ class Game(BaseModel):
             choice(list(TETROMINOS.keys())),
             self.sprites,
             self.create_new_teromino,
-            self.field_data)
+            self.field_data
+        )
 
         self.timers = {
             'vertival_move': Timer(UPDATE_START_SPEED, True, self.move_down),
@@ -47,13 +48,11 @@ class Game(BaseModel):
     def draw_grid(self):
         for col in range(1, COLUMNS):
             x = col * CELL_SIZE
-            pygame.draw.line(
-                self.line_surface, COLORS['WHITE'], (x, 0), (x, self.line_surface.get_height()), 2)
+            pygame.draw.line(self.line_surface, COLORS['WHITE'], (x, 0), (x, self.line_surface.get_height()), 2)
 
         for row in range(1, ROWS):
             y = row * CELL_SIZE
-            pygame.draw.line(
-                self.line_surface, COLORS['WHITE'], (0, y), (self.line_surface.get_width(), y), 2)
+            pygame.draw.line(self.line_surface, COLORS['WHITE'], (0, y), (self.line_surface.get_width(), y), 2)
 
         self.surface.blit(self.line_surface, (0, 0))
 
@@ -64,7 +63,8 @@ class Game(BaseModel):
             self.get_next_shape(),
             self.sprites,
             self.create_new_teromino,
-            self.field_data)
+            self.field_data
+        )
 
     def timers_update(self):
         for timer in self.timers.values():
@@ -125,8 +125,7 @@ class Game(BaseModel):
 
         self.display_surface.blit(self.surface, (PADDING, PADDING))
 
-        pygame.draw.rect(self.display_surface,
-                         COLORS['WHITE'], self.border, 3, 0)
+        pygame.draw.rect(self.display_surface, COLORS['WHITE'], self.border, 3, 0)
 
 
 if __name__ == '__main__':
