@@ -16,7 +16,7 @@ WINDOW_HEIGHT = GAME_HEIGHT + PADDING * 2
 UPDATE_START_SPEED = 200
 MOVE_WAIT_TIME = 200
 ROTATE_WAIT_TIME = 200
-BLOCK_OFFSET = pygame.Vector2(COLUMNS // 2, -1)
+BLOCK_OFFSET = pygame.Vector2(COLUMNS // 2, 5)
 
 
 COLORS = {'YELLOW': '#f1e60d',
@@ -25,7 +25,7 @@ COLORS = {'YELLOW': '#f1e60d',
           'GREEN': '#65b32e',
           'PURPLE': '#7b217f',
           'CYAN': '#6cc6d9',
-          'ORANGE': '#f07',
+          'ORANGE': '#f07e13',
           'GRAY': '#1c1c1c',
           'WHITE': '#ffffff',
           'PURE_GREEN': '#00ff00'}
