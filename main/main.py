@@ -20,7 +20,7 @@ class Tetris(object):
 
         self.game = Game(self.get_next_shape)
         self.score = Score()
-        self.preview = Preview(self.get_next_shape)
+        self.preview = Preview()
 
     def handle_quit(self):
         for event in pygame.event.get():
@@ -44,7 +44,7 @@ class Tetris(object):
 
             self.game.run()
             self.score.run()
-            self.preview.run()
+            self.preview.run(self.next_shapes)
 
             pygame.display.update()
             self.clock.tick()
