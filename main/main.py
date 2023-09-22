@@ -5,7 +5,7 @@ from score import Score
 from preview import Preview
 
 
-class Main(object):
+class Tetris(object):
     def __init__(self):
         pygame.init()
 
@@ -47,5 +47,5 @@ class Main(object):
 
 
 if __name__ == '__main__':
-    main = Main()
-    main.run()
+    tetris = Tetris()
+    tetris.run()
