@@ -8,9 +8,10 @@ class Block(pygame.sprite.Sprite):
         self.image.fill(color)
 
         self.position = pygame.Vector2(position) + BLOCK_OFFSET
-        x = self.position.x * CELL_SIZE
-        y = self.position.y * CELL_SIZE
-        self.rect = self.image.get_rect(topleft=(x, y))
+        self.rect = self.image.get_rect(topleft=self.position * CELL_SIZE)
+
+    def update(self):
+        self.rect.topleft = self.position * CELL_SIZE
 
 
 if __name__ == '__main__':
