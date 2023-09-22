@@ -5,8 +5,9 @@ from block import Block
 
 class Tetromino(object):
     def __init__(self, shape, group, create_new_teromino, field_data):
-        self.block_positions = TETROMINOS[shape]['shape']
-        self.color = TETROMINOS[shape]['color']
+        self.shape = shape
+        self.block_positions = TETROMINOS[self.shape]['shape']
+        self.color = TETROMINOS[self.shape]['color']
 
         self.create_new_teromino = create_new_teromino
         self.field_data = field_data
@@ -37,6 +38,25 @@ class Tetromino(object):
         if not self.next_move_horizontal_collide(self.blocks, step):
             for block in self.blocks:
                 block.position.x += step
+
+    def rotate(self):
+        if self.shape != 'O':
+            pivot_position = self.blocks[0].position
+
+            new_block_positions = [block.rotate(pivot_position) for block in self.blocks]
+
+            for position in new_block_positions:
+                if position.x < 0 or position.x >= COLUMNS:
+                    return
+
+                if self.field_data[int(position.y)][int(position.x)]:
+                    return
+
+                if position.y > ROWS:
+                    return
+
+            for i, block in enumerate(self.blocks):
+                block.position = new_block_positions[i]
 
 
 if __name__ == '__main__':
