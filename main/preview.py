@@ -29,9 +29,12 @@ class Preview(BaseModel):
 
     def run(self, next_shapes):
         self.surface.fill(COLORS['GRAY'])
+        
         self.display_pieces(next_shapes)
+        
         self.display_surface.blit(self.surface, self.rect)
-        pygame.draw.rect(self.display_surface, COLORS['WHITE'], self.rect, 2, 2)
+        
+        pygame.draw.rect(self.display_surface, COLORS['WHITE'], self.rect, 3, 2)
 
 
 if __name__ == '__main__':
