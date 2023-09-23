@@ -14,6 +14,8 @@ class Tetris(object):
         pygame.init()
 
         self.display_surface = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
+        self.icon = pygame.image.load(path.join('..', 'icon', 'tetris.png'))
+        pygame.display.set_icon(self.icon)
         pygame.display.set_caption('Tetris')
 
         self.clock = pygame.time.Clock()
