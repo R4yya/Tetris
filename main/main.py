@@ -21,8 +21,10 @@ class Tetris(object):
 
         self.next_shapes = [choice(list(TETROMINOS.keys())) for shape in range(3)]
 
+        self.font = pygame.font.Font(path.join('..', 'graphics', 'Russo_One.ttf'), 30)
+
         self.game = Game(self.get_next_shape, self.update_score)
-        self.score = Score()
+        self.score = Score(self.font)
         self.preview = Preview()
 
         self.background_music = pygame.mixer.Sound(path.join('..', 'sound', 'music.wav'))
