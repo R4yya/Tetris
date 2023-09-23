@@ -2,11 +2,9 @@ from settings import *
 
 from base_model import BaseModel
 
-from os import path
-
 
 class Score(BaseModel):
-    def __init__(self):
+    def __init__(self, font):
         self.surface = self.set_surface()
         self.rect = self.surface.get_rect(bottomright=(
             WINDOW_WIDTH - PADDING, WINDOW_HEIGHT - PADDING))
@@ -14,7 +12,7 @@ class Score(BaseModel):
 
         self.border = self.surface.get_rect(topleft=(PADDING, PADDING))
 
-        self.font = pygame.font.Font(path.join('..', 'graphics', 'Russo_One.ttf'), 30)
+        self.font = font
 
         self.increment_height = self.surface.get_height() / 3
 
