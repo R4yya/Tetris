@@ -21,14 +21,14 @@ BLOCK_OFFSET = pygame.Vector2(COLUMNS // 2, -1)
 
 
 COLORS = {
-    'YELLOW': '#f1e60d',
-    'RED': '#e51b20',
-    'BLUE': '#204b9b',
-    'GREEN': '#65b32e',
-    'PURPLE': '#7b217f',
-    'CYAN': '#6cc6d9',
-    'ORANGE': '#f07e13',
-    'GRAY': '#1c1c1c',
+    'YELLOW': '#f4ca16',
+    'RED': '#d20041',
+    'BLUE': '#006fc7',
+    'GREEN': '#97de3d',
+    'PURPLE': '#c567ea',
+    'CYAN': '#00d7df',
+    'ORANGE': '#f07427',
+    'GRAY': '#212121',
     'WHITE': '#ffffff',
     'PURE_GREEN': '#00ff00'
 }
