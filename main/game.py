@@ -26,7 +26,7 @@ class Game(BaseModel):
         self.line_surface = self.surface.copy()
         self.line_surface.fill(COLORS['PURE_GREEN'])
         self.line_surface.set_colorkey(COLORS['PURE_GREEN'])
-        self.line_surface.set_alpha(120)
+        self.line_surface.set_alpha(255)
 
         self.field_data = [[0 for x in range(COLUMNS)] for y in range(ROWS)]
         self.tetromino = Tetromino(
