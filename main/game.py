@@ -9,15 +9,17 @@ from random import choice
 
 
 class Game(BaseModel):
-    def __init__(self, get_next_shape):
+    def __init__(self, get_next_shape, update_score):
         self.surface = self.set_surface()
         self.display_surface = self.set_display_surface()
 
-        self.border = self.surface.get_rect(topleft=(PADDING, PADDING))
+        self.rect = self.surface.get_rect(topleft=(PADDING, PADDING))
 
         self.sprites = pygame.sprite.Group()
 
         self.get_next_shape = get_next_shape
+
+        self.update_score = update_score
 
         self.line_surface = self.surface.copy()
         self.line_surface.fill(COLORS['PURE_GREEN'])
@@ -33,7 +35,7 @@ class Game(BaseModel):
         )
 
         self.down_speed = UPDATE_START_SPEED
-        self.down_speed_faster = self.down_speed * 0.3
+        self.down_speed_faster = self.down_speed * 0.1
         self.down_pressed = False
 
         self.timers = {
@@ -42,6 +44,10 @@ class Game(BaseModel):
             'rotate': Timer(ROTATE_WAIT_TIME)
         }
         self.timers['vertival_move'].activate()
+
+        self.current_level = 1
+        self.current_score = 0
+        self.current_lines = 0
 
     def set_surface(self):
         return pygame.Surface((GAME_WIDTH, GAME_HEIGHT))
@@ -77,6 +83,17 @@ class Game(BaseModel):
     def move_down(self):
         self.tetromino.move_down(1)
 
+    def calculate_score(self, num_lines):
+        self.current_lines += num_lines
+        self.current_score += SCORE_DATA[num_lines] * self.current_level
+
+        if self.current_lines / 10 > self.current_level:
+            self.current_level += 1
+            self.down_speed -= INCREACE_SPEED
+            self.down_speed_faster = self.down_speed * 0.1
+
+        self.update_score(self.current_lines, self.current_score, self.current_level)
+
     def check_filled_rows(self):
         filled_rows = []
 
@@ -98,6 +115,8 @@ class Game(BaseModel):
 
             for block in self.sprites:
                 self.field_data[int(block.position.y)][int(block.position.x)] = block
+
+            self.calculate_score(len(filled_rows))
 
     def handle_input(self):
         keys = pygame.key.get_pressed()
@@ -137,7 +156,7 @@ class Game(BaseModel):
 
         self.display_surface.blit(self.surface, (PADDING, PADDING))
 
-        pygame.draw.rect(self.display_surface, COLORS['WHITE'], self.border, 3, 0)
+        pygame.draw.rect(self.display_surface, COLORS['WHITE'], self.rect, 3, 2)
 
 
 if __name__ == '__main__':
