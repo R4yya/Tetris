@@ -4,6 +4,8 @@ from game import Game
 from score import Score
 from preview import Preview
 
+from sys import exit
+from os import path
 from random import choice
 
 
@@ -15,6 +17,7 @@ class Tetris(object):
         pygame.display.set_caption('Tetris')
 
         self.clock = pygame.time.Clock()
+        self.running = False
 
         self.next_shapes = [choice(list(TETROMINOS.keys())) for shape in range(3)]
 
@@ -22,11 +25,15 @@ class Tetris(object):
         self.score = Score()
         self.preview = Preview()
 
+        self.background_music = pygame.mixer.Sound(path.join('..', 'sound', 'music.wav'))
+        self.background_music.set_volume(0.05)
+        self.background_music.play(-1)
+
     def handle_quit(self):
         for event in pygame.event.get():
             match event.type:
                 case pygame.QUIT:
-                    self.running = False
+                    exit()
 
     def update_score(self, lines, score, level):
         self.score.lines = lines
@@ -40,9 +47,7 @@ class Tetris(object):
         return next_shape
 
     def run(self):
-        self.running = True
-
-        while self.running:
+        while True:
             self.handle_quit()
 
             self.display_surface.fill(COLORS['GRAY'])
