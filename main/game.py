@@ -5,6 +5,8 @@ from base_model import BaseModel
 from tetromino import Tetromino
 from timer import Timer
 
+from sys import exit
+from os import path
 from random import choice
 
 
@@ -49,6 +51,9 @@ class Game(BaseModel):
         self.current_score = 0
         self.current_lines = 0
 
+        self.landing_sound = pygame.mixer.Sound(path.join('..', 'sound', 'landing.wav'))
+        self.landing_sound.set_volume(0.1)
+
     def set_surface(self):
         return pygame.Surface((GAME_WIDTH, GAME_HEIGHT))
 
@@ -66,8 +71,17 @@ class Game(BaseModel):
 
         self.surface.blit(self.line_surface, (0, 0))
 
+    def check_game_over(self):
+        for block in self.tetromino.blocks:
+            if block.position.y < 0:
+                exit()
+
     def create_new_teromino(self):
+        self.check_game_over()
+
         self.check_filled_rows()
+
+        self.landing_sound.play()
 
         self.tetromino = Tetromino(
             self.get_next_shape(),
