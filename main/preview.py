@@ -1,4 +1,4 @@
-from settings import Settings
+from settings import *
 
 from base_model import BaseModel
 
@@ -10,13 +10,13 @@ class Preview(BaseModel):
         self.surface = self.set_surface()
         self.display_surface = self.set_display_surface()
 
-        self.shape_surfaces = {shape: pygame.image.load(path.join('..', 'graphics', f'{shape}.png')).convert_alpha() for shape in TETROMINOS.keys()}
-        self.rect = self.surface.get_rect(topright=(WINDOW_WIDTH - PADDING, PADDING))
+        self.shape_surfaces = {shape: pygame.image.load(path.join('..', 'graphics', f'{shape}.png')).convert_alpha() for shape in Settings.TETROMINOS.keys()}
+        self.rect = self.surface.get_rect(topright=(Settings.WINDOW_WIDTH - Settings.PADDING, Settings.PADDING))
 
         self.increment_height = self.surface.get_height() / 3
 
     def set_surface(self):
-        return pygame.Surface((SIDEBAR_WIDTH, GAME_HEIGHT * PREVIEW_HEIGHT_FRACTION))
+        return pygame.Surface((Settings.SIDEBAR_WIDTH, Settings.GAME_HEIGHT * Settings.PREVIEW_HEIGHT_FRACTION))
 
     def set_display_surface(self):
         return pygame.display.get_surface()
@@ -30,13 +30,13 @@ class Preview(BaseModel):
             self.surface.blit(shape_surface, rect)
 
     def run(self, next_shapes):
-        self.surface.fill(COLORS['GRAY'])
+        self.surface.fill(Settings.COLORS['GRAY'])
         
         self.display_pieces(next_shapes)
         
         self.display_surface.blit(self.surface, self.rect)
         
-        pygame.draw.rect(self.display_surface, COLORS['WHITE'], self.rect, 3, 2)
+        pygame.draw.rect(self.display_surface, Settings.COLORS['WHITE'], self.rect, 3, 2)
 
 
 if __name__ == '__main__':
