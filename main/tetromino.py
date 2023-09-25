@@ -1,4 +1,4 @@
-from settings import Settings
+from settings import *
 
 from block import Block
 
@@ -6,8 +6,8 @@ from block import Block
 class Tetromino(object):
     def __init__(self, shape, group, create_new_teromino, field_data):
         self.shape = shape
-        self.block_positions = TETROMINOS[self.shape]['shape']
-        self.color = TETROMINOS[self.shape]['color']
+        self.block_positions = Settings.TETROMINOS[self.shape]['shape']
+        self.color = Settings.TETROMINOS[self.shape]['color']
 
         self.create_new_teromino = create_new_teromino
         self.field_data = field_data
@@ -45,13 +45,13 @@ class Tetromino(object):
             new_block_positions = [block.rotate(pivot_position) for block in self.blocks]
 
             for position in new_block_positions:
-                if position.x < 0 or position.x >= COLUMNS:
+                if position.x < 0 or position.x >= Settings.COLUMNS:
                     return
 
                 if self.field_data[int(position.y)][int(position.x)]:
                     return
 
-                if position.y > ROWS:
+                if position.y > Settings.ROWS:
                     return
 
             for i, block in enumerate(self.blocks):
