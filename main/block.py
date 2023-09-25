@@ -1,4 +1,4 @@
-from settings import *
+from settings import Settings
 
 
 class Block(pygame.sprite.Sprite):
