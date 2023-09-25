@@ -55,7 +55,7 @@ class Game(BaseModel):
         self.current_lines = 0
 
         self.landing_sound = pygame.mixer.Sound(path.join('..', 'sound', 'landing.wav'))
-        self.landing_sound.set_volume(0.1)
+        self.landing_sound.set_volume(0.5)
 
         self.font = font
 
