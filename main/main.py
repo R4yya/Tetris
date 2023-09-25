@@ -23,14 +23,15 @@ class Tetris(object):
 
         self.next_shapes = [choice(list(Settings.TETROMINOS.keys())) for shape in range(3)]
 
-        self.font = pygame.font.Font(path.join('..', 'graphics', 'Russo_One.ttf'), 30)
+        self.default_font = pygame.font.Font(path.join('..', 'graphics', 'Russo_One.ttf'), 30)
+        self.small_font = pygame.font.Font(path.join('..', 'graphics', 'Russo_One.ttf'), 24)
 
-        self.game = Game(self.get_next_shape, self.update_score, self.font)
-        self.score = Score(self.font)
+        self.game = Game(self.get_next_shape, self.update_score, self.default_font)
+        self.score = Score(self.small_font)
         self.preview = Preview()
 
         self.background_music = pygame.mixer.Sound(path.join('..', 'sound', 'music.wav'))
-        self.background_music.set_volume(0)
+        self.background_music.set_volume(0.5)
         self.background_music.play(-1)
 
         self.paused = False
@@ -47,14 +48,8 @@ class Tetris(object):
                     if event.key == pygame.K_SPACE:
                         self.toggle_pause()
 
-    def handle_pause(self):
-        keys = pygame.key.get_pressed()
-        if not self.game.timers['pause'].active:
-            if keys[pygame.K_SPACE]:
-                self.toggle_pause
-                self.game.timers['pause'].activate()
-
-    def update_score(self, lines, score, level):
+    def update_score(self, high_score, lines, score, level):
+        self.score.high_score = high_score
         self.score.lines = lines
         self.score.score = score
         self.score.level = level
@@ -68,7 +63,6 @@ class Tetris(object):
     def run(self):
         while True:
             self.handle_events()
-            self.handle_pause()
 
             if not self.paused:
                 if not self.game.game_over:
