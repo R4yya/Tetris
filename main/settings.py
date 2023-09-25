@@ -19,7 +19,6 @@ class Settings(object):
     INCREACE_SPEED = 100
     MOVE_WAIT_TIME = 120
     ROTATE_WAIT_TIME = 200
-    PAUSE_PRESS_TIME = 800
     BLOCK_OFFSET = pygame.Vector2(COLUMNS // 2, -1)
 
     COLORS = {
