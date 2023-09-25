@@ -5,7 +5,6 @@ from base_model import BaseModel
 from tetromino import Tetromino
 from timer import Timer
 
-from sys import exit
 from os import path
 from random import choice
 
@@ -80,7 +79,6 @@ class Game(BaseModel):
         self.field_data = [[0 for x in range(COLUMNS)] for y in range(ROWS)]
         self.down_speed = UPDATE_START_SPEED
         self.down_speed_faster = self.down_speed * 0.1
-        self.down_pressed = False
         self.current_level = 1
         self.current_score = 0
         self.current_lines = 0
@@ -89,9 +87,9 @@ class Game(BaseModel):
     def show_game_over_screen(self):
         game_over_surface = pygame.Surface((GAME_WIDTH, GAME_HEIGHT), pygame.SRCALPHA)
         game_over_rect = game_over_surface.get_rect()
-        
+
         pygame.draw.rect(game_over_surface, (0, 0, 0, 150), game_over_rect)
-        
+
         game_over_text = self.font.render("Game Over", True, COLORS['WHITE'])
         restart_text = self.font.render("Press any key to restart", True, COLORS['WHITE'])
 
@@ -102,7 +100,7 @@ class Game(BaseModel):
         self.display_surface.blit(game_over_text, game_over_rect)
         self.display_surface.blit(restart_text, restart_rect)
 
-        pygame.display.flip()
+        pygame.display.update()
 
     def check_game_over(self):
         for block in self.tetromino.blocks:
