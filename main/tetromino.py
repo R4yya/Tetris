@@ -16,12 +16,12 @@ class Tetromino(object):
 
     def next_move_horizontal_collide(self, blocks, step):
         collision_list = [block.horizontal_collide(int(block.position.x + step), self.field_data) for block in self.blocks]
-        
+
         return True if any(collision_list) else False
 
     def next_move_vertical_collide(self, blocks, step):
         collision_list = [block.vertical_collide(int(block.position.y + step), self.field_data) for block in self.blocks]
-        
+
         return True if any(collision_list) else False
 
     def move_down(self, step):
