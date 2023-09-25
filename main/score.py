@@ -20,7 +20,6 @@ class Score(BaseModel):
         self.score = 0
         self.level = 1
 
-
     def set_surface(self):
         return pygame.Surface((SIDEBAR_WIDTH, GAME_HEIGHT * SCORE_HEIGHT_FRACTION - PADDING))
 
