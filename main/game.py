@@ -1,4 +1,4 @@
-from settings import Settings
+from settings import *
 
 from base_model import BaseModel
 
@@ -14,7 +14,7 @@ class Game(BaseModel):
         self.surface = self.set_surface()
         self.display_surface = self.set_display_surface()
 
-        self.rect = self.surface.get_rect(topleft=(PADDING, PADDING))
+        self.rect = self.surface.get_rect(topleft=(Settings.PADDING, Settings.PADDING))
 
         self.sprites = pygame.sprite.Group()
 
@@ -23,26 +23,26 @@ class Game(BaseModel):
         self.update_score = update_score
 
         self.line_surface = self.surface.copy()
-        self.line_surface.fill(COLORS['PURE_GREEN'])
-        self.line_surface.set_colorkey(COLORS['PURE_GREEN'])
+        self.line_surface.fill(Settings.COLORS['PURE_GREEN'])
+        self.line_surface.set_colorkey(Settings.COLORS['PURE_GREEN'])
         self.line_surface.set_alpha(255)
 
-        self.field_data = [[0 for x in range(COLUMNS)] for y in range(ROWS)]
+        self.field_data = [[0 for x in range(Settings.COLUMNS)] for y in range(Settings.ROWS)]
         self.tetromino = Tetromino(
-            choice(list(TETROMINOS.keys())),
+            choice(list(Settings.TETROMINOS.keys())),
             self.sprites,
             self.create_new_teromino,
             self.field_data
         )
 
-        self.down_speed = UPDATE_START_SPEED
+        self.down_speed = Settings.UPDATE_START_SPEED
         self.down_speed_faster = self.down_speed * 0.1
         self.down_pressed = False
 
         self.timers = {
             'vertival_move': Timer(self.down_speed, True, self.move_down),
-            'horisontal_move': Timer(MOVE_WAIT_TIME),
-            'rotate': Timer(ROTATE_WAIT_TIME)
+            'horisontal_move': Timer(Settings.MOVE_WAIT_TIME),
+            'rotate': Timer(Settings.ROTATE_WAIT_TIME)
         }
         self.timers['vertival_move'].activate()
 
@@ -58,26 +58,26 @@ class Game(BaseModel):
         self.game_over = False
 
     def set_surface(self):
-        return pygame.Surface((GAME_WIDTH, GAME_HEIGHT))
+        return pygame.Surface((Settings.GAME_WIDTH, Settings.GAME_HEIGHT))
 
     def set_display_surface(self):
         return pygame.display.get_surface()
 
     def draw_grid(self):
-        for col in range(1, COLUMNS):
-            x = col * CELL_SIZE
-            pygame.draw.line(self.line_surface, COLORS['WHITE'], (x, 0), (x, self.line_surface.get_height()), 2)
+        for col in range(1, Settings.COLUMNS):
+            x = col * Settings.CELL_SIZE
+            pygame.draw.line(self.line_surface, Settings.COLORS['WHITE'], (x, 0), (x, self.line_surface.get_height()), 2)
 
-        for row in range(1, ROWS):
-            y = row * CELL_SIZE
-            pygame.draw.line(self.line_surface, COLORS['WHITE'], (0, y), (self.line_surface.get_width(), y), 2)
+        for row in range(1, Settings.ROWS):
+            y = row * Settings.CELL_SIZE
+            pygame.draw.line(self.line_surface, Settings.COLORS['WHITE'], (0, y), (self.line_surface.get_width(), y), 2)
 
         self.surface.blit(self.line_surface, (0, 0))
 
     def reset_game(self):
-        self.sprites = pygame.sprite.Group()
-        self.field_data = [[0 for x in range(COLUMNS)] for y in range(ROWS)]
-        self.down_speed = UPDATE_START_SPEED
+        self.sprites.empty()
+        self.field_data = [[0 for x in range(Settings.COLUMNS)] for y in range(Settings.ROWS)]
+        self.down_speed = Settings.UPDATE_START_SPEED
         self.down_speed_faster = self.down_speed * 0.1
         self.current_level = 1
         self.current_score = 0
@@ -85,20 +85,35 @@ class Game(BaseModel):
         self.game_over = False
 
     def show_game_over_screen(self):
-        game_over_surface = pygame.Surface((GAME_WIDTH, GAME_HEIGHT), pygame.SRCALPHA)
+        game_over_surface = pygame.Surface((Settings.GAME_WIDTH, Settings.GAME_HEIGHT), pygame.SRCALPHA)
         game_over_rect = game_over_surface.get_rect()
 
         pygame.draw.rect(game_over_surface, (0, 0, 0, 150), game_over_rect)
 
-        game_over_text = self.font.render("Game Over", True, COLORS['WHITE'])
-        restart_text = self.font.render("Press any key to restart", True, COLORS['WHITE'])
+        game_over_text = self.font.render("Game Over", True, Settings.COLORS['WHITE'])
+        restart_text = self.font.render("Press any key to restart", True, Settings.COLORS['WHITE'])
 
-        game_over_rect = game_over_text.get_rect(center=(GAME_WIDTH // 2 + PADDING, GAME_HEIGHT // 2))
-        restart_rect = restart_text.get_rect(center=(GAME_WIDTH // 2 + PADDING, GAME_HEIGHT // 2 + 50))
+        game_over_rect = game_over_text.get_rect(center=(Settings.GAME_WIDTH // 2 + Settings.PADDING, Settings.GAME_HEIGHT // 2))
+        restart_rect = restart_text.get_rect(center=(Settings.GAME_WIDTH // 2 + Settings.PADDING, Settings.GAME_HEIGHT // 2 + 50))
 
         self.display_surface.blit(game_over_surface, self.rect)
         self.display_surface.blit(game_over_text, game_over_rect)
         self.display_surface.blit(restart_text, restart_rect)
+
+        pygame.display.update()
+
+    def show_pause_screen(self):
+        pause_surface = pygame.Surface((Settings.GAME_WIDTH, Settings.GAME_HEIGHT), pygame.SRCALPHA)
+        pause_rect = pause_surface.get_rect()
+
+        pygame.draw.rect(pause_surface, (0, 0, 0, 150), pause_rect)
+
+        pause_text = self.font.render("Paused", True, Settings.COLORS['WHITE'])
+
+        pause_rect = pause_text.get_rect(center=(Settings.GAME_WIDTH // 2 + Settings.PADDING, Settings.GAME_HEIGHT // 2))
+
+        self.display_surface.blit(pause_surface, self.rect)
+        self.display_surface.blit(pause_text, pause_rect)
 
         pygame.display.update()
 
@@ -120,9 +135,6 @@ class Game(BaseModel):
             self.create_new_teromino,
             self.field_data
         )
-        for row in self.field_data:
-            print(row)
-        print()
 
     def timers_update(self):
         for timer in self.timers.values():
@@ -133,12 +145,13 @@ class Game(BaseModel):
 
     def calculate_score(self, num_lines):
         self.current_lines += num_lines
-        self.current_score += SCORE_DATA[num_lines] * self.current_level
+        self.current_score += Settings.SCORE_DATA[num_lines] * self.current_level
 
         if self.current_lines / 10 > self.current_level:
             self.current_level += 1
-            self.down_speed -= INCREACE_SPEED
-            self.down_speed_faster = self.down_speed * 0.1
+            if not (self.down_speed == Settings.INCREACE_SPEED):
+                self.down_speed -= Settings.INCREACE_SPEED
+                self.down_speed_faster = self.down_speed * 0.1
 
         self.update_score(self.current_lines, self.current_score, self.current_level)
 
@@ -159,7 +172,7 @@ class Game(BaseModel):
                         if block and block.position.y < filled_row:
                             block.position.y += 1
 
-            self.field_data = [[0 for x in range(COLUMNS)] for y in range(ROWS)]
+            self.field_data = [[0 for x in range(Settings.COLUMNS)] for y in range(Settings.ROWS)]
 
             for block in self.sprites:
                 self.field_data[int(block.position.y)][int(block.position.x)] = block
@@ -191,20 +204,19 @@ class Game(BaseModel):
             self.timers['vertival_move'].duration = self.down_speed
 
     def run(self):
-
         self.handle_input()
         self.timers_update()
         self.sprites.update()
 
-        self.surface.fill(COLORS['GRAY'])
+        self.surface.fill(Settings.COLORS['GRAY'])
 
         self.sprites.draw(self.surface)
 
         self.draw_grid()
 
-        self.display_surface.blit(self.surface, (PADDING, PADDING))
+        self.display_surface.blit(self.surface, (Settings.PADDING, Settings.PADDING))
 
-        pygame.draw.rect(self.display_surface, COLORS['WHITE'], self.rect, 3, 2)
+        pygame.draw.rect(self.display_surface, Settings.COLORS['WHITE'], self.rect, 3, 2)
 
 
 if __name__ == '__main__':
