@@ -27,6 +27,11 @@ class Score(BaseModel):
     def set_display_surface(self):
         return pygame.display.get_surface()
 
+    def reset_score(self):
+        self.lines = 0
+        self.score = 0
+        self.level = 1
+
     def display_text(self):
         for i, text in enumerate([('Score', self.score), ('Level', self.level), ('Lines', self.lines)]):
             x = self.surface.get_width() / 2
