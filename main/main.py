@@ -31,7 +31,7 @@ class Tetris(object):
         self.preview = Preview()
 
         self.background_music = pygame.mixer.Sound(path.join('..', 'sound', 'music.wav'))
-        self.background_music.set_volume(0.5)
+        self.background_music.set_volume(0.05)
         self.background_music.play(-1)
 
         self.paused = False
