@@ -1,4 +1,4 @@
-from settings import Settings
+from settings import *
 
 from game import Game
 from score import Score
@@ -13,7 +13,7 @@ class Tetris(object):
     def __init__(self):
         pygame.init()
 
-        self.display_surface = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
+        self.display_surface = pygame.display.set_mode((Settings.WINDOW_WIDTH, Settings.WINDOW_HEIGHT))
         self.icon = pygame.image.load(path.join('..', 'icon', 'tetris.png'))
         pygame.display.set_icon(self.icon)
         pygame.display.set_caption('Tetris')
@@ -21,7 +21,7 @@ class Tetris(object):
         self.clock = pygame.time.Clock()
         self.running = False
 
-        self.next_shapes = [choice(list(TETROMINOS.keys())) for shape in range(3)]
+        self.next_shapes = [choice(list(Settings.TETROMINOS.keys())) for shape in range(3)]
 
         self.font = pygame.font.Font(path.join('..', 'graphics', 'Russo_One.ttf'), 30)
 
@@ -33,13 +33,26 @@ class Tetris(object):
         self.background_music.set_volume(0)
         self.background_music.play(-1)
 
-        self.game_over = False
+        self.paused = False
 
-    def handle_quit(self):
+    def toggle_pause(self):
+        self.paused = not self.paused
+
+    def handle_events(self):
         for event in pygame.event.get():
             match event.type:
                 case pygame.QUIT:
                     exit()
+                case pygame.KEYDOWN:
+                    if event.key == pygame.K_SPACE:
+                        self.toggle_pause()
+
+    def handle_pause(self):
+        keys = pygame.key.get_pressed()
+        if not self.game.timers['pause'].active:
+            if keys[pygame.K_SPACE]:
+                self.toggle_pause
+                self.game.timers['pause'].activate()
 
     def update_score(self, lines, score, level):
         self.score.lines = lines
@@ -48,35 +61,39 @@ class Tetris(object):
 
     def get_next_shape(self):
         next_shape = self.next_shapes.pop(0)
-        self.next_shapes.append(choice(list(TETROMINOS.keys())))
+        self.next_shapes.append(choice(list(Settings.TETROMINOS.keys())))
 
         return next_shape
 
     def run(self):
         while True:
-            self.handle_quit()
+            self.handle_events()
+            self.handle_pause()
 
-            if not self.game.game_over:
-                self.display_surface.fill(COLORS['GRAY'])
+            if not self.paused:
+                if not self.game.game_over:
+                    self.display_surface.fill(Settings.COLORS['GRAY'])
 
-                self.game.run()
-                self.score.run()
-                self.preview.run(self.next_shapes)
+                    self.game.run()
+                    self.score.run()
+                    self.preview.run(self.next_shapes)
 
-                pygame.display.update()
-                self.clock.tick()
+                    pygame.display.update()
+                    self.clock.tick()
+                else:
+                    self.score.reset_score()
+                    self.game.reset_game()
+                    self.game.show_game_over_screen()
+
+                    waiting = True
+                    while waiting:
+                        for event in pygame.event.get():
+                            if event.type == pygame.QUIT:
+                                exit()
+                            if event.type == pygame.KEYDOWN:
+                                waiting = False
             else:
-                self.score.reset_score()
-                self.game.reset_game()
-                self.game.show_game_over_screen()
-
-                waiting = True
-                while waiting:
-                    for event in pygame.event.get():
-                        if event.type == pygame.QUIT:
-                            exit()
-                        if event.type == pygame.KEYDOWN:
-                            waiting = False
+                self.game.show_pause_screen()
 
 
 if __name__ == '__main__':
