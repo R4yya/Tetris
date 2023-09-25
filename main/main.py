@@ -1,4 +1,4 @@
-from settings import *
+from settings import Settings
 
 from game import Game
 from score import Score
@@ -30,7 +30,7 @@ class Tetris(object):
         self.preview = Preview()
 
         self.background_music = pygame.mixer.Sound(path.join('..', 'sound', 'music.wav'))
-        self.background_music.set_volume(0.05)
+        self.background_music.set_volume(0)
         self.background_music.play(-1)
 
         self.game_over = False
@@ -66,7 +66,6 @@ class Tetris(object):
                 pygame.display.update()
                 self.clock.tick()
             else:
-                self.game_over = False
                 self.score.reset_score()
                 self.game.reset_game()
                 self.game.show_game_over_screen()
