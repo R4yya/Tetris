@@ -11,7 +11,7 @@ from random import choice
 
 
 class Game(BaseModel):
-    def __init__(self, get_next_shape, update_score):
+    def __init__(self, get_next_shape, update_score, font):
         self.surface = self.set_surface()
         self.display_surface = self.set_display_surface()
 
@@ -54,6 +54,10 @@ class Game(BaseModel):
         self.landing_sound = pygame.mixer.Sound(path.join('..', 'sound', 'landing.wav'))
         self.landing_sound.set_volume(0.1)
 
+        self.font = font
+
+        self.game_over = False
+
     def set_surface(self):
         return pygame.Surface((GAME_WIDTH, GAME_HEIGHT))
 
@@ -71,10 +75,39 @@ class Game(BaseModel):
 
         self.surface.blit(self.line_surface, (0, 0))
 
+    def reset_game(self):
+        self.sprites = pygame.sprite.Group()
+        self.field_data = [[0 for x in range(COLUMNS)] for y in range(ROWS)]
+        self.down_speed = UPDATE_START_SPEED
+        self.down_speed_faster = self.down_speed * 0.1
+        self.down_pressed = False
+        self.current_level = 1
+        self.current_score = 0
+        self.current_lines = 0
+        self.game_over = False
+
+    def show_game_over_screen(self):
+        game_over_surface = pygame.Surface((GAME_WIDTH, GAME_HEIGHT), pygame.SRCALPHA)
+        game_over_rect = game_over_surface.get_rect()
+        
+        pygame.draw.rect(game_over_surface, (0, 0, 0, 150), game_over_rect)
+        
+        game_over_text = self.font.render("Game Over", True, COLORS['WHITE'])
+        restart_text = self.font.render("Press any key to restart", True, COLORS['WHITE'])
+
+        game_over_rect = game_over_text.get_rect(center=(GAME_WIDTH // 2 + PADDING, GAME_HEIGHT // 2))
+        restart_rect = restart_text.get_rect(center=(GAME_WIDTH // 2 + PADDING, GAME_HEIGHT // 2 + 50))
+
+        self.display_surface.blit(game_over_surface, self.rect)
+        self.display_surface.blit(game_over_text, game_over_rect)
+        self.display_surface.blit(restart_text, restart_rect)
+
+        pygame.display.flip()
+
     def check_game_over(self):
         for block in self.tetromino.blocks:
             if block.position.y < 0:
-                exit()
+                self.game_over = True
 
     def create_new_teromino(self):
         self.check_game_over()
@@ -89,6 +122,9 @@ class Game(BaseModel):
             self.create_new_teromino,
             self.field_data
         )
+        for row in self.field_data:
+            print(row)
+        print()
 
     def timers_update(self):
         for timer in self.timers.values():
