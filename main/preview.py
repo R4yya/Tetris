@@ -1,5 +1,7 @@
-from settings import *
+from settings import Settings
+
 from base_model import BaseModel
+
 from os import path
 
 
