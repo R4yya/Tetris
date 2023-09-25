@@ -7,6 +7,7 @@ from timer import Timer
 
 from os import path
 from random import choice
+from pickle import load, dump
 
 
 class Game(BaseModel):
@@ -46,6 +47,9 @@ class Game(BaseModel):
         }
         self.timers['vertival_move'].activate()
 
+        self.high_score_path = path.join('..', 'save', 'high_score.dat')
+
+        self.high_score = self.load_high_score()
         self.current_level = 1
         self.current_score = 0
         self.current_lines = 0
@@ -143,6 +147,17 @@ class Game(BaseModel):
     def move_down(self):
         self.tetromino.move_down(1)
 
+    def load_high_score(self):
+        if path.exists(self.high_score_path) and path.getsize(self.high_score_path) > 0:
+            with open(self.high_score_path, 'rb') as file:
+                return load(file)
+        else:
+            return 0
+
+    def save_high_score(self, high_score):
+        with open(self.high_score_path, 'wb') as file:
+            dump(high_score, file)
+
     def calculate_score(self, num_lines):
         self.current_lines += num_lines
         self.current_score += Settings.SCORE_DATA[num_lines] * self.current_level
@@ -153,7 +168,11 @@ class Game(BaseModel):
                 self.down_speed -= Settings.INCREACE_SPEED
                 self.down_speed_faster = self.down_speed * 0.1
 
-        self.update_score(self.current_lines, self.current_score, self.current_level)
+        if self.current_score > self.high_score:
+            self.high_score = self.current_score
+            self.save_high_score(self.current_score)
+
+        self.update_score(self.high_score, self.current_lines, self.current_score, self.current_level)
 
     def check_filled_rows(self):
         filled_rows = []
