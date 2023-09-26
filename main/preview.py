@@ -31,11 +31,11 @@ class Preview(BaseModel):
 
     def run(self, next_shapes):
         self.surface.fill(Settings.COLORS['GRAY'])
-        
+
         self.display_pieces(next_shapes)
-        
+
         self.display_surface.blit(self.surface, self.rect)
-        
+
         pygame.draw.rect(self.display_surface, Settings.COLORS['WHITE'], self.rect, 3, 2)
 
 
