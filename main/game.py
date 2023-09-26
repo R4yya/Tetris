@@ -55,7 +55,7 @@ class Game(BaseModel):
         self.current_lines = 0
 
         self.landing_sound = pygame.mixer.Sound(path.join('..', 'sound', 'landing.wav'))
-        self.landing_sound.set_volume(0.5)
+        self.landing_sound.set_volume(0.1)
 
         self.font = font
 
@@ -164,7 +164,7 @@ class Game(BaseModel):
 
         if self.current_lines / 10 > self.current_level:
             self.current_level += 1
-            if not (self.down_speed == Settings.INCREACE_SPEED):
+            if self.down_speed > Settings.INCREACE_SPEED:
                 self.down_speed -= Settings.INCREACE_SPEED
                 self.down_speed_faster = self.down_speed * 0.1
 
