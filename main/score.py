@@ -33,7 +33,7 @@ class Score(BaseModel):
         self.level = 1
 
     def display_text(self):
-        for i, text in enumerate([('High Score', self.high_score), ('Score', self.score), ('Level', self.level), ('Lines', self.lines)]):
+        for i, text in enumerate([('High Score', self.high_score), ('Current Score', self.score), ('Level', self.level), ('Lines', self.lines)]):
             x = self.surface.get_width() / 2
             y = self.increment_height / 2 + i * self.increment_height
             text_surface = self.font.render(f'{text[0]}: {text[1]}', True, Settings.COLORS['WHITE'])
