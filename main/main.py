@@ -23,8 +23,8 @@ class Tetris(object):
 
         self.next_shapes = [choice(list(Settings.TETROMINOS.keys())) for shape in range(3)]
 
-        self.default_font = pygame.font.Font(path.join('..', 'graphics', 'Russo_One.ttf'), 30)
-        self.small_font = pygame.font.Font(path.join('..', 'graphics', 'Russo_One.ttf'), 24)
+        self.default_font = pygame.font.Font(path.join('..', 'font', 'Russo_One.ttf'), 30)
+        self.small_font = pygame.font.Font(path.join('..', 'font', 'Russo_One.ttf'), 22)
 
         self.game = Game(self.get_next_shape, self.update_score, self.default_font)
         self.score = Score(self.small_font)
